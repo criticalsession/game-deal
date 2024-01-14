@@ -8,4 +8,5 @@ type GameInfo struct {
 	Cheapest       string `json:"cheapest"`
 	CheapestDealID string `json:"cheapestDealID"`
 	Title          string `json:"external"`
+	Thumb          string `json:"thumb"`
 }

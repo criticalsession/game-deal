@@ -1,9 +1,14 @@
 package main
 
 import (
-  "fmt"
+	"fmt"
+
+	"github.com/criticalsession/game-deal/config"
 )
 
-func main () {
-  fmt.Println("hello, world")
+func main() {
+	cfg := config.New()
+	fmt.Println(cfg.GetDealUrl("123"))
 }
+
+// https://apidocs.cheapshark.com/

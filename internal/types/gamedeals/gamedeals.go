@@ -10,7 +10,7 @@ type SingleGameResp struct {
 
 type GameInfo struct {
 	Title      string `json:"title"`
-	SteamAppID any    `json:"steamAppID"`
+	SteamAppID string `json:"steamAppID"`
 }
 
 type CheapestPrice struct {

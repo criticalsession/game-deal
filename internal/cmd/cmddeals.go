@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -38,6 +39,12 @@ func cmdDeals(config *api.Config, args ...string) {
 		c := color.New(color.FgGreen)
 		c.Printf("Deals for: \"%s\"\n", res.Info.Title)
 
+		c = color.New(color.FgRed)
+		sCheapest, _ := utils.StringTo2fString(res.CheapestEver.Price)
+		c.Printf("Historically cheapest price: $%s\n", sCheapest)
+
+		fmt.Println()
+
 		savingDeals := []gamedeals.Deal{}
 		for _, deal := range res.Deals {
 			savings, err := strconv.ParseFloat(deal.Savings, 64)
@@ -67,5 +74,7 @@ func cmdDeals(config *api.Config, args ...string) {
 			c = color.New(color.FgYellow)
 			c.Printf(" ($%s -> $%s, %s%% off)\n", sRetailPrice, sPrice, sSavings)
 		}
+
+		fmt.Println()
 	}
 }

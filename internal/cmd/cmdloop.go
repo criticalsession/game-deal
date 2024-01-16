@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 	"strings"
 
 	"github.com/fatih/color"
@@ -11,6 +10,7 @@ import (
 
 func CmdLoop() {
 	head()
+	commands := buildCommands()
 
 	for {
 		fmt.Print("> ")
@@ -19,13 +19,17 @@ func CmdLoop() {
 
 		args := cleanInput(input)
 		if len(args) == 0 {
-			printHelp()
+			printHelp(&commands)
 			continue
 		}
 
-		if args[0] == "exit" {
-			os.Exit(0)
+		cmd, ok := commands[args[0]]
+		if !ok {
+			printHelp(&commands)
+			continue
 		}
+
+		cmd.function(args[1:]...)
 	}
 }
 
@@ -48,6 +52,6 @@ func cleanInput(s string) []string {
 	return strings.Fields(s)
 }
 
-func printHelp() {
-	fmt.Println("HELP!")
+func printHelp(commands *map[string]command) {
+	(*commands)["help"].function()
 }

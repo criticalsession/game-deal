@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/criticalsession/game-deal/internal/api"
+	"github.com/criticalsession/game-deal/internal/utils"
 	"github.com/fatih/color"
 	"github.com/kyokomi/emoji/v2"
 )
@@ -26,10 +27,15 @@ func cmdSearch(config *api.Config, args ...string) {
 	}
 
 	for _, game := range games {
-		c := color.New(color.FgCyan)
+		sPrice, _ := utils.StringTo2fString(game.Cheapest)
+
+		c := color.New(color.FgHiCyan)
 		c.Printf("%-11s", "["+game.GameID+"]")
 		c = color.New(color.Reset).Add(color.Bold)
-		c.Printf("%s\n", game.Title)
+		c.Printf("%s", game.Title)
+		c = color.New(color.FgYellow)
+
+		c.Printf(" ($%s)\n", sPrice)
 	}
 
 	c = color.New(color.Reset)
@@ -37,7 +43,7 @@ func cmdSearch(config *api.Config, args ...string) {
 	c.Printf("Use \"")
 	c = c.Add(color.Bold)
 	c.Print("deals ")
-	c = c.Add(color.FgCyan)
+	c = c.Add(color.FgHiCyan)
 	c.Printf("[gameID]")
 	c = color.New(color.Reset)
 	c.Printf("\" command to see deals for a game\n")

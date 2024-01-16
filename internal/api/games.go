@@ -3,10 +3,10 @@ package api
 import "github.com/criticalsession/game-deal/internal/types/gamesearch"
 
 func (c *Config) SearchGames(title string) (gamesearch.Resp, error) {
-	url := c.BaseApi + "/games?title=" + title
+	url := baseUrl + "/games?title=" + title
 	gameResp := gamesearch.Resp{}
 
-	err := getData(url, c.Client, &gameResp)
+	err := getData(url, c.client, &gameResp)
 	if err != nil {
 		return gamesearch.Resp{}, err
 	}

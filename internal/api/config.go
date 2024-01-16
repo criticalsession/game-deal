@@ -5,10 +5,11 @@ import (
 	"time"
 )
 
+const baseUrl = "https://www.cheapshark.com/api/1.0"
+const dealUrl = "https://www.cheapshark.com/redirect?dealID="
+
 type Config struct {
-	DealUrl string
-	BaseApi string
-	Client  http.Client
+	client http.Client
 }
 
 type StoreCache struct {
@@ -19,14 +20,12 @@ type StoreCache struct {
 
 func NewConfig() *Config {
 	return &Config{
-		DealUrl: "https://www.cheapshark.com/redirect?dealID=",
-		BaseApi: "https://www.cheapshark.com/api/1.0",
-		Client: http.Client{
+		client: http.Client{
 			Timeout: time.Minute,
 		},
 	}
 }
 
 func (c *Config) GetDealUrl(dealId string) string {
-	return c.DealUrl + dealId
+	return dealUrl + dealId
 }

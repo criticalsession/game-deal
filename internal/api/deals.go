@@ -5,10 +5,10 @@ import (
 )
 
 func (c *Config) GetGameDeals(id string) (gamedeals.Resp, error) {
-	url := c.BaseApi + "/games?ids=" + id
+	url := baseUrl + "/games?ids=" + id
 	dealResp := gamedeals.Resp{}
 
-	err := getData(url, c.Client, &dealResp)
+	err := getData(url, c.client, &dealResp)
 	if err != nil {
 		return gamedeals.Resp{}, err
 	}

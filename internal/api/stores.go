@@ -5,10 +5,10 @@ import (
 )
 
 func (c *Config) GetStores() (stores.Resp, error) {
-	url := c.BaseApi + "/stores"
+	url := baseUrl + "/stores"
 	storeResp := stores.Resp{}
 
-	err := getData(url, c.Client, &storeResp)
+	err := getData(url, c.client, &storeResp)
 	if err != nil {
 		return stores.Resp{}, err
 	}

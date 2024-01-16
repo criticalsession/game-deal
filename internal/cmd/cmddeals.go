@@ -48,7 +48,7 @@ func cmdDeals(config *api.Config, args ...string) {
 
 		c = color.New(color.FgRed)
 		sCheapest, _ := utils.StringTo2fString(res.CheapestEver.Price)
-		c.Printf("Historically cheapest price: $%s\n", sCheapest)
+		c.Printf("Historically cheapest price: $%s (%s)\n", sCheapest, utils.UnixToDateString(int64(res.CheapestEver.Date)))
 
 		fmt.Println()
 

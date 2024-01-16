@@ -35,6 +35,9 @@ func cmdDeals(config *api.Config, args ...string) {
 		return
 	}
 
+	dealList := []gamedeals.Deal{}
+	dealListCount := 0
+
 	for _, res := range result {
 		c := color.New(color.FgGreen)
 		c.Printf("Deals for: \"%s\"\n", res.Info.Title)
@@ -59,7 +62,7 @@ func cmdDeals(config *api.Config, args ...string) {
 
 		if len(savingDeals) == 0 {
 			c := color.New(color.Reset)
-			c.Printf("No deals :(\n")
+			c.Printf("No active deals found :(\n")
 			continue
 		}
 
@@ -70,13 +73,31 @@ func cmdDeals(config *api.Config, args ...string) {
 			iStoreID, _ := strconv.Atoi(deal.StoreID)
 
 			c := color.New(color.FgCyan)
-			c.Printf("%s", "["+stores[iStoreID].StoreName+"]")
+			c.Printf("[%d] [%s]", dealListCount+1, stores[iStoreID].StoreName)
 			c = color.New(color.Reset)
 			c.Printf(" - ")
+			c = color.New(color.FgYellow).Add(color.CrossedOut)
+			c.Printf("$%s", sRetailPrice)
 			c = color.New(color.FgYellow)
-			c.Printf("$%s -> $%-6s\t\t%s%% off\n", sRetailPrice, sPrice, sSavings)
+			c.Printf(" $%s (%s%% off)\n", sPrice, sSavings)
+
+			dealList = append(dealList, deal)
+			dealListCount++
 		}
 
 		fmt.Println("")
 	}
+
+	if len(dealList) > 0 {
+		c := color.New(color.Reset)
+		c.Printf("Use \"")
+		c = c.Add(color.Bold)
+		c.Print("open ")
+		c = c.Add(color.FgHiCyan)
+		c.Printf("[dealID]")
+		c = color.New(color.Reset)
+		c.Printf("\" command to open deal in browser\n")
+	}
+
+	config.SetDealsList(dealList)
 }

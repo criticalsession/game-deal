@@ -20,6 +20,11 @@ func getCommands() map[string]command {
 			description: "find deals for given game",
 			function:    cmdDeals,
 		},
+		"open": {
+			name:        "open [dealID]",
+			description: "open deal store URL in browser",
+			function:    cmdOpenDeal,
+		},
 		"stores": {
 			name:        "stores",
 			description: "list all stores available for deal search",

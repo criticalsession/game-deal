@@ -10,6 +10,10 @@ func (c *Config) GetStores() (map[int]stores.Store, error) {
 	url := baseUrl + "/stores"
 	storeResp := stores.Resp{}
 
+	if len(c.storeCache.entries) > 0 {
+		return c.storeCache.entries, nil
+	}
+
 	err := getData(url, c.client, &storeResp)
 	if err != nil {
 		return map[int]stores.Store{}, err
@@ -24,6 +28,8 @@ func (c *Config) GetStores() (map[int]stores.Store, error) {
 
 		result[id] = store
 	}
+
+	c.storeCache.entries = result
 
 	return result, nil
 }

@@ -9,13 +9,8 @@ const baseUrl = "https://www.cheapshark.com/api/1.0"
 const dealUrl = "https://www.cheapshark.com/redirect?dealID="
 
 type Config struct {
-	client http.Client
-}
-
-type StoreCache struct {
-	StoreID   int
-	StoreName string
-	Expires   time.Time
+	client     http.Client
+	storeCache *storeCache
 }
 
 func NewConfig() *Config {
@@ -23,6 +18,7 @@ func NewConfig() *Config {
 		client: http.Client{
 			Timeout: time.Minute,
 		},
+		storeCache: NewStoreCache(),
 	}
 }
 

@@ -19,6 +19,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println(len(stores))
 
 	for _, x := range res {
 		fmt.Printf("Cheapest Historical Price: $%s\n", x.CheapestEver.Price)

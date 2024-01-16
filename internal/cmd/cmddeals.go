@@ -70,11 +70,13 @@ func cmdDeals(config *api.Config, args ...string) {
 			iStoreID, _ := strconv.Atoi(deal.StoreID)
 
 			c := color.New(color.FgCyan)
-			c.Printf("%-14s", "["+stores[iStoreID].StoreName+"]")
+			c.Printf("%s", "["+stores[iStoreID].StoreName+"]")
+			c = color.New(color.Reset)
+			c.Printf(" - ")
 			c = color.New(color.FgYellow)
-			c.Printf(" ($%s -> $%s, %s%% off)\n", sRetailPrice, sPrice, sSavings)
+			c.Printf("$%s -> $%-6s\t\t%s%% off\n", sRetailPrice, sPrice, sSavings)
 		}
 
-		fmt.Println()
+		fmt.Println("")
 	}
 }

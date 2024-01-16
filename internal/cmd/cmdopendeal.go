@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -34,6 +35,7 @@ func cmdOpenDeal(config *api.Config, args ...string) {
 		return
 	}
 
+	fmt.Println("Opening deal in browser...")
 	dealUrl := config.GetDealUrl(deal.DealID)
 	utils.OpenURL(dealUrl)
 }

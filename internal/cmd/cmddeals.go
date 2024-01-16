@@ -19,12 +19,25 @@ func cmdDeals(config *api.Config, args ...string) {
 		return
 	}
 
-	id := args[0]
+	sid := args[0]
 
-	id = strings.ReplaceAll(id, "[", "")
-	id = strings.ReplaceAll(id, "]", "")
+	sid = strings.ReplaceAll(sid, "[", "")
+	sid = strings.ReplaceAll(sid, "]", "")
 
-	result, err := config.GetGameDeals(id)
+	id, err := strconv.Atoi(sid)
+	if err != nil {
+		color.Red("%sInvalid id: %s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
+		return
+	}
+	id -= 1
+
+	cheapsharkGameId, err := config.GetGameIdFromGameList(id)
+	if err != nil {
+		color.Red("%s%s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
+		return
+	}
+
+	result, err := config.GetGameDeals(cheapsharkGameId)
 	if err != nil {
 		color.Red("%sAn error occured while searching deals: %s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
 		return
@@ -40,6 +53,7 @@ func cmdDeals(config *api.Config, args ...string) {
 	dealListCount := 0
 
 	headerFmt := color.New(color.FgGreen, color.Bold, color.Underline).SprintfFunc()
+
 	idFmt := color.New(color.FgCyan).SprintfFunc()
 
 	for _, res := range result {
@@ -52,19 +66,7 @@ func cmdDeals(config *api.Config, args ...string) {
 
 		fmt.Println()
 
-		savingDeals := []gamedeals.Deal{}
-		for _, deal := range res.Deals {
-			savings, err := strconv.ParseFloat(deal.Savings, 64)
-			if err != nil {
-				savings = 0
-			}
-
-			if savings > 0 {
-				savingDeals = append(savingDeals, deal)
-			}
-		}
-
-		if len(savingDeals) == 0 {
+		if len(res.Deals) == 0 {
 			c := color.New(color.Reset)
 			c.Printf("No active deals found :(\n")
 			continue
@@ -73,7 +75,7 @@ func cmdDeals(config *api.Config, args ...string) {
 		tbl := table.New("DealID", "| Store", "| Original Price", "| Discounted Price", "| Savings")
 		tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(idFmt)
 
-		for _, deal := range savingDeals {
+		for _, deal := range res.Deals {
 			sPrice, _ := utils.StringTo2fString(deal.Price)
 			sRetailPrice, _ := utils.StringTo2fString(deal.RetailPrice)
 			sSavings, _ := utils.StringTo2fString(deal.Savings)

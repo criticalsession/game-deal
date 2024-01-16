@@ -33,14 +33,18 @@ func cmdSearch(config *api.Config, args ...string) {
 	headerFmt := color.New(color.FgGreen, color.Bold, color.Underline).SprintfFunc()
 	idFmt := color.New(color.FgCyan).SprintfFunc()
 
-	tbl := table.New("GameID", "| Title", "| Cheapest Deal")
+	tbl := table.New("ID", "| Title", "| Cheapest Deal")
 	tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(idFmt)
+
+	gameIdCount := 0
+	yellowFmt := color.New(color.FgYellow).SprintfFunc()
 
 	for _, game := range games {
 		sPrice, _ := utils.StringTo2fString(game.Cheapest)
 		sPrice = "$" + sPrice
 
-		tbl.AddRow(game.GameID, "| "+game.Title, "| "+sPrice)
+		tbl.AddRow(gameIdCount+1, "| "+game.Title, "| "+yellowFmt(sPrice))
+		gameIdCount++
 	}
 
 	tbl.Print()
@@ -51,7 +55,9 @@ func cmdSearch(config *api.Config, args ...string) {
 	c = c.Add(color.Bold)
 	c.Print("deals ")
 	c = c.Add(color.FgHiCyan)
-	c.Printf("[gameID]")
+	c.Printf("[ID]")
 	c = color.New(color.Reset)
 	c.Printf("\" command to see deals for a game\n")
+
+	config.SetGameList(games)
 }

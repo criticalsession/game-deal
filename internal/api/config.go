@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/criticalsession/game-deal/internal/types/gamedeals"
+	"github.com/criticalsession/game-deal/internal/types/gamesearch"
 )
 
 const baseUrl = "https://www.cheapshark.com/api/1.0"
@@ -16,6 +17,7 @@ type Config struct {
 	client     http.Client
 	storeCache *storeCache
 	dealList   []gamedeals.Deal
+	gameList   []gamesearch.GameInfo
 }
 
 func NewConfig() *Config {
@@ -42,4 +44,16 @@ func (c *Config) GetDealFromList(index int) (gamedeals.Deal, error) {
 	}
 
 	return c.dealList[index], nil
+}
+
+func (c *Config) SetGameList(games []gamesearch.GameInfo) {
+	c.gameList = games
+}
+
+func (c *Config) GetGameIdFromGameList(index int) (string, error) {
+	if index >= len(c.gameList) {
+		return "", errors.New("game id " + fmt.Sprintf("[%d]", index) + " not found")
+	}
+
+	return c.gameList[index].GameID, nil
 }

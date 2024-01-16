@@ -1,9 +1,13 @@
 package api
 
-import "github.com/criticalsession/game-deal/internal/types/gamesearch"
+import (
+	"net/url"
+
+	"github.com/criticalsession/game-deal/internal/types/gamesearch"
+)
 
 func (c *Config) SearchGames(title string) (gamesearch.Resp, error) {
-	url := baseUrl + "/games?title=" + title
+	url := baseUrl + "/games?title=" + url.QueryEscape(title)
 	gameResp := gamesearch.Resp{}
 
 	err := getData(url, c.client, &gameResp)

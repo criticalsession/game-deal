@@ -1,35 +1,39 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"strings"
 
+	"github.com/criticalsession/game-deal/internal/api"
 	"github.com/fatih/color"
 	"github.com/kyokomi/emoji/v2"
 )
 
-func CmdLoop() {
+func CmdLoop(cfg *api.Config) {
 	head()
-	commands := buildCommands()
+	commands := getCommands()
+	scanner := bufio.NewScanner(os.Stdin)
 
 	for {
 		fmt.Print("> ")
-		var input string
-		fmt.Scanln(&input)
+		scanner.Scan()
+		input := scanner.Text()
 
 		args := cleanInput(input)
 		if len(args) == 0 {
-			printHelp(&commands)
+			printHelp(cfg, &commands)
 			continue
 		}
 
 		cmd, ok := commands[args[0]]
 		if !ok {
-			printHelp(&commands)
+			printHelp(cfg, &commands)
 			continue
 		}
 
-		cmd.function(args[1:]...)
+		cmd.function(cfg, args[1:]...)
 	}
 }
 
@@ -52,6 +56,6 @@ func cleanInput(s string) []string {
 	return strings.Fields(s)
 }
 
-func printHelp(commands *map[string]command) {
-	(*commands)["help"].function()
+func printHelp(cfg *api.Config, commands *map[string]command) {
+	(*commands)["help"].function(cfg)
 }

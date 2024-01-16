@@ -1,8 +1,11 @@
 package cmd
 
-import "os"
+import (
+	"os"
 
-func cmdExit(args ...string) error {
+	"github.com/criticalsession/game-deal/internal/api"
+)
+
+func cmdExit(config *api.Config, args ...string) {
 	os.Exit(0)
-	return nil
 }

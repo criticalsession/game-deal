@@ -1,13 +1,25 @@
 package cmd
 
+import "github.com/criticalsession/game-deal/internal/api"
+
 type command struct {
 	name        string
 	description string
-	function    func(args ...string) error
+	function    func(config *api.Config, args ...string)
 }
 
-func buildCommands() map[string]command {
+func getCommands() map[string]command {
 	return map[string]command{
+		"search": {
+			name:        "search [keywords]",
+			description: "find games matching keywords",
+			function:    cmdSearch,
+		},
+		"deals": {
+			name:        "deals [gameID]",
+			description: "find deals for given game",
+			function:    cmdDeals,
+		},
 		"help": {
 			name:        "help",
 			description: "print this help message",

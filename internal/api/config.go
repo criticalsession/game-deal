@@ -40,7 +40,7 @@ func (c *Config) SetDealsList(deals []gamedeals.Deal) {
 
 func (c *Config) GetDealFromList(index int) (gamedeals.Deal, error) {
 	if index >= len(c.dealList) {
-		return gamedeals.Deal{}, errors.New("deal id " + fmt.Sprintf("[%d]", index) + " not found")
+		return gamedeals.Deal{}, errors.New("deal id " + fmt.Sprintf("[%d]", index+1) + " not found")
 	}
 
 	return c.dealList[index], nil
@@ -52,7 +52,7 @@ func (c *Config) SetGameList(games []gamesearch.GameInfo) {
 
 func (c *Config) GetGameIdFromGameList(index int) (string, error) {
 	if index >= len(c.gameList) {
-		return "", errors.New("game id " + fmt.Sprintf("[%d]", index) + " not found")
+		return "", errors.New("game id " + fmt.Sprintf("[%d]", index+1) + " not found")
 	}
 
 	return c.gameList[index].GameID, nil

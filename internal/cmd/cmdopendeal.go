@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/criticalsession/game-deal/internal/api"
 	"github.com/criticalsession/game-deal/internal/utils"
@@ -35,7 +35,13 @@ func cmdOpenDeal(config *api.Config, args ...string) {
 		return
 	}
 
-	fmt.Println("Opening deal in browser...")
+	color.Green("Opening deal in browser %s\n\n", emoji.Sprint(":rocket:"))
+
 	dealUrl := config.GetDealUrl(deal.DealID)
-	utils.OpenURL(dealUrl)
+	go sleepThenOpen(dealUrl)
+}
+
+func sleepThenOpen(url string) {
+	time.Sleep(1 * time.Second)
+	utils.OpenURL(url)
 }

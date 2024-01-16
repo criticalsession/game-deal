@@ -1,8 +1,11 @@
 package cmd
 
 import (
+	"os"
+
 	"github.com/criticalsession/game-deal/internal/api"
 	"github.com/fatih/color"
+	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/kyokomi/emoji/v2"
 )
 
@@ -13,11 +16,16 @@ func cmdStores(config *api.Config, args ...string) {
 		return
 	}
 
-	for _, s := range stores {
-		c := color.New(color.FgHiCyan)
-		c.Printf("%-6s", "["+s.StoreID+"]")
-		c = color.New(color.Reset).Add(color.Bold)
-		c.Printf("%s\n", s.StoreName)
+	headerFmt := color.New(color.FgGreen, color.Bold).SprintFunc()
+	cyanFmt := color.New(color.FgCyan).SprintfFunc()
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{headerFmt("ID"), headerFmt("Store")})
 
+	for i := 1; i <= len(stores); i++ {
+		t.AppendRow([]interface{}{cyanFmt("[" + stores[i].StoreID + "]"), stores[i].StoreName})
 	}
+
+	t.SetStyle(table.StyleLight)
+	t.Render()
 }

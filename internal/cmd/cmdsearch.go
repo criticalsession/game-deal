@@ -2,21 +2,22 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/criticalsession/game-deal/internal/api"
 	"github.com/criticalsession/game-deal/internal/utils"
 	"github.com/fatih/color"
+	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/kyokomi/emoji/v2"
-	"github.com/rodaine/table"
 )
 
 func cmdSearch(config *api.Config, args ...string) {
-	t := strings.Join(args, " ")
+	titles := strings.Join(args, " ")
 	c := color.New(color.FgGreen)
-	c.Printf("Searching for: \"%s\"\n", t)
+	c.Printf("Searching for: \"%s\"\n", titles)
 
-	games, err := config.SearchGames(t)
+	games, err := config.SearchGames(titles)
 	if err != nil {
 		color.Red("%sAn error occured while searching games: %s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
 		return
@@ -30,24 +31,28 @@ func cmdSearch(config *api.Config, args ...string) {
 
 	fmt.Println()
 
-	headerFmt := color.New(color.FgGreen, color.Bold, color.Underline).SprintfFunc()
-	idFmt := color.New(color.FgCyan).SprintfFunc()
+	headerFmt := color.New(color.FgGreen, color.Bold).SprintFunc()
+	cyanFmt := color.New(color.FgCyan).SprintfFunc()
+	yellowFmt := color.New(color.FgYellow).SprintfFunc()
 
-	tbl := table.New("ID", "| Title", "| Cheapest Deal")
-	tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(idFmt)
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{headerFmt("ID"), headerFmt("Title"), headerFmt("Cheapest Deal")})
 
 	gameIdCount := 0
-	yellowFmt := color.New(color.FgYellow).SprintfFunc()
 
 	for _, game := range games {
 		sPrice, _ := utils.StringTo2fString(game.Cheapest)
 		sPrice = "$" + sPrice
 
-		tbl.AddRow(gameIdCount+1, "| "+game.Title, "| "+yellowFmt(sPrice))
+		t.AppendRow([]interface{}{cyanFmt("[" + fmt.Sprint(gameIdCount+1) + "]"), game.Title,
+			yellowFmt(sPrice)})
+
 		gameIdCount++
 	}
 
-	tbl.Print()
+	t.SetStyle(table.StyleLight)
+	t.Render()
 
 	c = color.New(color.Reset)
 	c.Println()

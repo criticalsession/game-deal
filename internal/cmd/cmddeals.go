@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 
@@ -9,8 +10,8 @@ import (
 	"github.com/criticalsession/game-deal/internal/types/gamedeals"
 	"github.com/criticalsession/game-deal/internal/utils"
 	"github.com/fatih/color"
+	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/kyokomi/emoji/v2"
-	"github.com/rodaine/table"
 )
 
 func cmdDeals(config *api.Config, args ...string) {
@@ -52,9 +53,10 @@ func cmdDeals(config *api.Config, args ...string) {
 	dealList := []gamedeals.Deal{}
 	dealListCount := 0
 
-	headerFmt := color.New(color.FgGreen, color.Bold, color.Underline).SprintfFunc()
-
-	idFmt := color.New(color.FgCyan).SprintfFunc()
+	headerFmt := color.New(color.FgGreen, color.Bold).SprintFunc()
+	cyanFmt := color.New(color.FgCyan).SprintFunc()
+	greenFmt := color.New(color.FgGreen).SprintFunc()
+	yellowFmt := color.New(color.FgYellow).SprintFunc()
 
 	for _, res := range result {
 		c := color.New(color.FgGreen)
@@ -72,8 +74,9 @@ func cmdDeals(config *api.Config, args ...string) {
 			continue
 		}
 
-		tbl := table.New("DealID", "| Store", "| Original Price", "| Discounted Price", "| Savings")
-		tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(idFmt)
+		t := table.NewWriter()
+		t.SetOutputMirror(os.Stdout)
+		t.AppendHeader(table.Row{headerFmt("ID"), headerFmt("Store"), headerFmt("Original Price"), headerFmt("Discounted Price"), headerFmt("Savings")})
 
 		for _, deal := range res.Deals {
 			sPrice, _ := utils.StringTo2fString(deal.Price)
@@ -81,13 +84,22 @@ func cmdDeals(config *api.Config, args ...string) {
 			sSavings, _ := utils.StringTo2fString(deal.Savings)
 			iStoreID, _ := strconv.Atoi(deal.StoreID)
 
-			tbl.AddRow(dealListCount+1, "| "+stores[iStoreID].StoreName, "| $"+sRetailPrice, "| $"+sPrice, "| "+sSavings+"%")
+			s, _ := strconv.ParseFloat(sSavings, 64)
+			if s > 0 {
+				sSavings = greenFmt(sSavings + "%")
+			} else {
+				sSavings += "%"
+			}
+
+			t.AppendRow([]interface{}{cyanFmt("[" + fmt.Sprint(dealListCount+1) + "]"), stores[iStoreID].StoreName,
+				yellowFmt("$" + sRetailPrice), yellowFmt("$" + sPrice), sSavings})
 
 			dealList = append(dealList, deal)
 			dealListCount++
 		}
 
-		tbl.Print()
+		t.SetStyle(table.StyleLight)
+		t.Render()
 
 		fmt.Println("")
 	}
@@ -98,7 +110,7 @@ func cmdDeals(config *api.Config, args ...string) {
 		c = c.Add(color.Bold)
 		c.Print("open ")
 		c = c.Add(color.FgHiCyan)
-		c.Printf("[dealID]")
+		c.Printf("[ID]")
 		c = color.New(color.Reset)
 		c.Printf("\" command to open deal in browser\n")
 	}

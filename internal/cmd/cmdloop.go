@@ -39,7 +39,7 @@ func CmdLoop(cfg *api.Config) {
 
 func head() {
 	c := color.New(color.FgHiCyan).Add(color.Bold)
-	c.Printf("\n%s GAME-DEAL %s", emoji.Sprintf(":video_game:"), emoji.Sprintf(":video_game:"))
+	c.Printf("\n%sGAME-DEAL %s", emoji.Sprintf(":video_game:"), emoji.Sprintf(":video_game:"))
 	c = color.New(color.Reset).Add(color.Bold)
 	c.Printf("\nFind and track game deals\n\n")
 

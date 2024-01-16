@@ -10,6 +10,7 @@ import (
 	"github.com/criticalsession/game-deal/internal/utils"
 	"github.com/fatih/color"
 	"github.com/kyokomi/emoji/v2"
+	"github.com/rodaine/table"
 )
 
 func cmdDeals(config *api.Config, args ...string) {
@@ -37,6 +38,9 @@ func cmdDeals(config *api.Config, args ...string) {
 
 	dealList := []gamedeals.Deal{}
 	dealListCount := 0
+
+	headerFmt := color.New(color.FgGreen, color.Bold, color.Underline).SprintfFunc()
+	idFmt := color.New(color.FgCyan).SprintfFunc()
 
 	for _, res := range result {
 		c := color.New(color.FgGreen)
@@ -66,24 +70,22 @@ func cmdDeals(config *api.Config, args ...string) {
 			continue
 		}
 
+		tbl := table.New("DealID", "| Store", "| Original Price", "| Discounted Price", "| Savings")
+		tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(idFmt)
+
 		for _, deal := range savingDeals {
 			sPrice, _ := utils.StringTo2fString(deal.Price)
 			sRetailPrice, _ := utils.StringTo2fString(deal.RetailPrice)
 			sSavings, _ := utils.StringTo2fString(deal.Savings)
 			iStoreID, _ := strconv.Atoi(deal.StoreID)
 
-			c := color.New(color.FgCyan)
-			c.Printf("[%d] [%s]", dealListCount+1, stores[iStoreID].StoreName)
-			c = color.New(color.Reset)
-			c.Printf(" - ")
-			c = color.New(color.FgYellow).Add(color.CrossedOut)
-			c.Printf("$%s", sRetailPrice)
-			c = color.New(color.FgYellow)
-			c.Printf(" $%s (%s%% off)\n", sPrice, sSavings)
+			tbl.AddRow(dealListCount+1, "| "+stores[iStoreID].StoreName, "| $"+sRetailPrice, "| $"+sPrice, "| "+sSavings+"%")
 
 			dealList = append(dealList, deal)
 			dealListCount++
 		}
+
+		tbl.Print()
 
 		fmt.Println("")
 	}

@@ -1,12 +1,14 @@
 package cmd
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/criticalsession/game-deal/internal/api"
 	"github.com/criticalsession/game-deal/internal/utils"
 	"github.com/fatih/color"
 	"github.com/kyokomi/emoji/v2"
+	"github.com/rodaine/table"
 )
 
 func cmdSearch(config *api.Config, args ...string) {
@@ -26,17 +28,22 @@ func cmdSearch(config *api.Config, args ...string) {
 		return
 	}
 
+	fmt.Println()
+
+	headerFmt := color.New(color.FgGreen, color.Bold, color.Underline).SprintfFunc()
+	idFmt := color.New(color.FgCyan).SprintfFunc()
+
+	tbl := table.New("GameID", "| Title", "| Cheapest Deal")
+	tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(idFmt)
+
 	for _, game := range games {
 		sPrice, _ := utils.StringTo2fString(game.Cheapest)
+		sPrice = "$" + sPrice
 
-		c := color.New(color.FgHiCyan)
-		c.Printf("%-11s", "["+game.GameID+"]")
-		c = color.New(color.Reset).Add(color.Bold)
-		c.Printf("%s", game.Title)
-		c = color.New(color.FgYellow)
-
-		c.Printf(" ($%s)\n", sPrice)
+		tbl.AddRow(game.GameID, "| "+game.Title, "| "+sPrice)
 	}
+
+	tbl.Print()
 
 	c = color.New(color.Reset)
 	c.Println()

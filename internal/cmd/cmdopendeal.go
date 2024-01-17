@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/criticalsession/game-deal/internal/api"
-	"github.com/criticalsession/game-deal/internal/utils"
+	"github.com/criticalsession/game-deal/utils"
 	"github.com/fatih/color"
 	"github.com/kyokomi/emoji/v2"
 )

@@ -8,7 +8,7 @@ import (
 
 	"github.com/criticalsession/game-deal/internal/api"
 	"github.com/criticalsession/game-deal/internal/types/gamedeals"
-	"github.com/criticalsession/game-deal/internal/utils"
+	"github.com/criticalsession/game-deal/utils"
 	"github.com/fatih/color"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/kyokomi/emoji/v2"
@@ -32,13 +32,13 @@ func cmdDeals(config *api.Config, args ...string) {
 	}
 	id -= 1
 
-	cheapsharkGameId, err := config.GetGameIdFromGameList(id)
+	cheapsharkGame, err := config.GetGameFromGameList(id)
 	if err != nil {
 		color.Red("%s%s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
 		return
 	}
 
-	result, err := config.GetGameDeals(cheapsharkGameId)
+	result, err := config.GetGameDeals(cheapsharkGame.GameID)
 	if err != nil {
 		color.Red("%sAn error occured while searching deals: %s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
 		return

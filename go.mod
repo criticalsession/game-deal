@@ -6,6 +6,7 @@ require (
 	github.com/fatih/color v1.16.0
 	github.com/jedib0t/go-pretty/v6 v6.5.3
 	github.com/kyokomi/emoji/v2 v2.2.12
+	github.com/mattn/go-sqlite3 v1.14.19
 )
 
 require (

@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/criticalsession/game-deal/internal/api"
-	"github.com/criticalsession/game-deal/internal/utils"
+	"github.com/criticalsession/game-deal/utils"
 	"github.com/fatih/color"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/kyokomi/emoji/v2"

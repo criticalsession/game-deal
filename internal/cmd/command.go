@@ -30,6 +30,21 @@ func getCommands() (map[string]command, []string) {
 			description: "list all stores available for deal search",
 			function:    cmdStores,
 		},
+		"fav-list": {
+			name:        "fav-list",
+			description: "list all favorited games",
+			function:    cmdListFav,
+		},
+		"fav-add": {
+			name:        "fav-add [gameID]",
+			description: "add game to favorites",
+			function:    cmdFav,
+		},
+		"fav-remove": {
+			name:        "fav-remove [gameID]",
+			description: "remove game from favorites",
+			function:    cmdUnfav,
+		},
 		"help": {
 			name:        "help",
 			description: "print this help message",
@@ -40,5 +55,5 @@ func getCommands() (map[string]command, []string) {
 			description: "exit game-deal",
 			function:    cmdExit,
 		},
-	}, []string{"search", "deals", "open", "stores", "help", "exit"} // correct order for help
+	}, []string{"search", "deals", "open", "stores", "fav-list", "fav-add", "fav-remove", "help", "exit"} // correct order for help
 }

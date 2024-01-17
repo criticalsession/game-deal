@@ -50,10 +50,10 @@ func (c *Config) SetGameList(games []gamesearch.GameInfo) {
 	c.gameList = games
 }
 
-func (c *Config) GetGameIdFromGameList(index int) (string, error) {
+func (c *Config) GetGameFromGameList(index int) (gamesearch.GameInfo, error) {
 	if index >= len(c.gameList) {
-		return "", errors.New("game id " + fmt.Sprintf("[%d]", index+1) + " not found")
+		return gamesearch.GameInfo{}, errors.New("game id " + fmt.Sprintf("[%d]", index+1) + " not found")
 	}
 
-	return c.gameList[index].GameID, nil
+	return c.gameList[index], nil
 }

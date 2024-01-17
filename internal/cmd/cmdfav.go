@@ -3,42 +3,35 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"strconv"
-	"strings"
 
 	"github.com/criticalsession/game-deal/internal/api"
 	"github.com/criticalsession/game-deal/internal/db"
+	"github.com/criticalsession/game-deal/utils"
 	"github.com/fatih/color"
 	"github.com/jedib0t/go-pretty/v6/table"
-	"github.com/kyokomi/emoji/v2"
 )
 
 func cmdFav(config *api.Config, args ...string) {
 	if len(args) != 1 {
-		color.Red("\"fav-add\" command requires a gameID. Use \"search [keywords]\" command to find gameIDs.")
+		utils.PrintError("\"fav-add\" command requires a gameID. Use \"search [keywords]\" command to find gameIDs.")
 		return
 	}
 
-	sid := args[0]
-
-	sid = strings.ReplaceAll(sid, "[", "")
-	sid = strings.ReplaceAll(sid, "]", "")
-
-	id, err := strconv.Atoi(sid)
+	index, err := utils.GetIndexFromInput(args[0])
 	if err != nil {
-		color.Red("%sInvalid id: %s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
+		utils.PrintError(err.Error())
 		return
 	}
 
-	cheapsharkGame, err := config.GetGameFromGameList(id - 1)
+	cheapsharkGame, err := config.GetGameFromGameList(index)
 	if err != nil {
-		color.Red("%s%s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
+		utils.PrintError(err.Error())
 		return
 	}
 
 	err = db.AddFav(cheapsharkGame.GameID, cheapsharkGame.Title)
 	if err != nil {
-		color.Red("%s%s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
+		utils.PrintError(err.Error())
 		return
 	}
 
@@ -50,30 +43,25 @@ func cmdFav(config *api.Config, args ...string) {
 
 func cmdUnfav(config *api.Config, args ...string) {
 	if len(args) != 1 {
-		color.Red("\"fav-remove\" command requires a gameID. Use \"fav-list\" command to see favorited games.")
+		utils.PrintError("\"fav-remove\" command requires a gameID. Use \"fav-list\" command to see favorited games.")
 		return
 	}
 
-	sid := args[0]
-
-	sid = strings.ReplaceAll(sid, "[", "")
-	sid = strings.ReplaceAll(sid, "]", "")
-
-	id, err := strconv.Atoi(sid)
+	index, err := utils.GetIndexFromInput(args[0])
 	if err != nil {
-		color.Red("%sInvalid id: %s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
+		utils.PrintError(err.Error())
 		return
 	}
 
-	game, err := db.GetFavByIndex(id - 1)
+	game, err := db.GetFavByIndex(index)
 	if err != nil {
-		color.Red("%s%s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
+		utils.PrintError(err.Error())
 		return
 	}
 
 	err = db.RemoveFav(game.Id)
 	if err != nil {
-		color.Red("%s%s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
+		utils.PrintError(err.Error())
 		return
 	}
 
@@ -86,7 +74,7 @@ func cmdUnfav(config *api.Config, args ...string) {
 func cmdListFav(config *api.Config, args ...string) {
 	res, err := db.GetFavs()
 	if err != nil {
-		color.Red("%s%s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
+		utils.PrintError(err.Error())
 		return
 	}
 

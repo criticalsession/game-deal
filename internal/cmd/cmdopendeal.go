@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"strconv"
-	"strings"
 	"time"
 
 	"github.com/criticalsession/game-deal/internal/api"
@@ -13,25 +11,19 @@ import (
 
 func cmdOpenDeal(config *api.Config, args ...string) {
 	if len(args) != 1 {
-		color.Red("\"deals\" command requires a gameID. Use \"search [keywords]\" command to find gameIDs.")
+		utils.PrintError("\"deals\" command requires a gameID. Use \"search [keywords]\" command to find gameIDs.")
 		return
 	}
 
-	sid := args[0]
-
-	sid = strings.ReplaceAll(sid, "[", "")
-	sid = strings.ReplaceAll(sid, "]", "")
-
-	id, err := strconv.Atoi(sid)
+	index, err := utils.GetIndexFromInput(args[0])
 	if err != nil {
-		color.Red("%sInvalid id: %s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
+		utils.PrintError(err.Error())
 		return
 	}
-	id -= 1
 
-	deal, err := config.GetDealFromList(id)
+	deal, err := config.GetDealFromList(index)
 	if err != nil {
-		color.Red("%s%s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
+		utils.PrintError(err.Error())
 		return
 	}
 

@@ -4,49 +4,41 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
 
 	"github.com/criticalsession/game-deal/internal/api"
 	"github.com/criticalsession/game-deal/internal/types/gamedeals"
 	"github.com/criticalsession/game-deal/utils"
 	"github.com/fatih/color"
 	"github.com/jedib0t/go-pretty/v6/table"
-	"github.com/kyokomi/emoji/v2"
 )
 
 func cmdDeals(config *api.Config, args ...string) {
 	if len(args) != 1 {
-		color.Red("\"deals\" command requires a gameID. Use \"search [keywords]\" command to find gameIDs.")
+		utils.PrintError("\"deals\" command requires a gameID. Use \"search [keywords]\" command to find gameIDs.")
 		return
 	}
 
-	sid := args[0]
-
-	sid = strings.ReplaceAll(sid, "[", "")
-	sid = strings.ReplaceAll(sid, "]", "")
-
-	id, err := strconv.Atoi(sid)
+	index, err := utils.GetIndexFromInput(args[0])
 	if err != nil {
-		color.Red("%sInvalid id: %s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
+		utils.PrintError(err.Error())
 		return
 	}
-	id -= 1
 
-	cheapsharkGame, err := config.GetGameFromGameList(id)
+	cheapsharkGame, err := config.GetGameFromGameList(index)
 	if err != nil {
-		color.Red("%s%s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
+		utils.PrintError(err.Error())
 		return
 	}
 
 	result, err := config.GetGameDeals(cheapsharkGame.GameID)
 	if err != nil {
-		color.Red("%sAn error occured while searching deals: %s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
+		utils.PrintError(fmt.Sprint("An error occured while searching deals:", err.Error()))
 		return
 	}
 
 	stores, err := config.GetStores()
 	if err != nil {
-		color.Red("%sAn error occured while getting stores: %s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
+		utils.PrintError(fmt.Sprint("An error occured while getting stores:", err.Error()))
 		return
 	}
 

@@ -9,7 +9,6 @@ import (
 	"github.com/criticalsession/game-deal/utils"
 	"github.com/fatih/color"
 	"github.com/jedib0t/go-pretty/v6/table"
-	"github.com/kyokomi/emoji/v2"
 )
 
 func cmdSearch(config *api.Config, args ...string) {
@@ -19,7 +18,7 @@ func cmdSearch(config *api.Config, args ...string) {
 
 	games, err := config.SearchGames(titles)
 	if err != nil {
-		color.Red("%sAn error occured while searching games: %s", emoji.Sprintf(":red_exclamation_mark:"), err.Error())
+		utils.PrintError(fmt.Sprint("An error occured while searching games:", err.Error()))
 		return
 	}
 

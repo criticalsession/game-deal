@@ -8,7 +8,7 @@ type command struct {
 	function    func(config *api.Config, args ...string)
 }
 
-func getCommands() map[string]command {
+func getCommands() (map[string]command, []string) {
 	return map[string]command{
 		"search": {
 			name:        "search [keywords]",
@@ -22,7 +22,7 @@ func getCommands() map[string]command {
 		},
 		"open": {
 			name:        "open [dealID]",
-			description: "open deal store URL in browser",
+			description: "open deal URL in browser",
 			function:    cmdOpenDeal,
 		},
 		"stores": {
@@ -40,5 +40,5 @@ func getCommands() map[string]command {
 			description: "exit game-deal",
 			function:    cmdExit,
 		},
-	}
+	}, []string{"search", "deals", "open", "stores", "help", "exit"} // correct order for help
 }

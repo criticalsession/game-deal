@@ -10,8 +10,8 @@ func cmdPrintHelp(config *api.Config, args ...string) {
 	fmt.Println("Usage: > command [args]")
 	fmt.Println()
 
-	commands := getCommands()
-	for _, cmd := range commands {
-		fmt.Printf("%s\n  - %s\n", cmd.name, cmd.description)
+	commands, order := getCommands()
+	for _, cmd := range order {
+		fmt.Printf("%s\n  - %s\n", commands[cmd].name, commands[cmd].description)
 	}
 }

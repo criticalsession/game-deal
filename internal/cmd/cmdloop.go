@@ -13,7 +13,7 @@ import (
 
 func CmdLoop(cfg *api.Config) {
 	head()
-	commands := getCommands()
+	commands, _ := getCommands()
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for {

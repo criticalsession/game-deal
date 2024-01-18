@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/criticalsession/game-deal/internal/api"
+	"github.com/criticalsession/game-deal/internal/types/gamesearch"
 	"github.com/criticalsession/game-deal/utils"
 	"github.com/fatih/color"
 	"github.com/jedib0t/go-pretty/v6/table"
@@ -63,6 +64,8 @@ func cmdSearch(config *api.Config, args ...string) {
 
 	gameIdCount := 0
 
+	filteredGames := gamesearch.Resp{}
+
 	for _, game := range games {
 		if maxPrice > 0 {
 			fPriceFloat, _ := strconv.ParseFloat(game.Cheapest, 64)
@@ -79,6 +82,8 @@ func cmdSearch(config *api.Config, args ...string) {
 			yellowFmt(sPrice)})
 
 		gameIdCount++
+
+		filteredGames = append(filteredGames, game)
 	}
 
 	if gameIdCount == 0 && maxPrice > 0 {
@@ -92,5 +97,5 @@ func cmdSearch(config *api.Config, args ...string) {
 	fmt.Println()
 	utils.HelperLine("deals", "[ID] <max=?>", "see deals for a game")
 
-	config.SetGameList(games)
+	config.SetGameList(filteredGames)
 }

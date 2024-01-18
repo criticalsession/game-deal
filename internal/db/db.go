@@ -90,7 +90,7 @@ func GetFavByIndex(id int) (FavRow, error) {
 		return FavRow{}, err
 	}
 
-	if id > len(results) {
+	if id >= len(results) {
 		return FavRow{}, errors.New("id not found in fav list")
 	}
 

@@ -16,8 +16,8 @@ func getCommands() (map[string]command, []string) {
 				function:    cmdSearch,
 			},
 			"deals": {
-				name:        "deals [gameID]",
-				description: "find deals for given game",
+				name:        "deals [gameID] <max=?>",
+				description: "find deals for given game\nmax is optional and limits maximum price (e.g. max=30)",
 				function:    cmdDeals,
 			},
 			"open": {
@@ -46,8 +46,8 @@ func getCommands() (map[string]command, []string) {
 				function:    cmdUnfav,
 			},
 			"fav-deals": {
-				name:        "fav-deals",
-				description: "get deals for all your favorited games",
+				name:        "fav-deals <max=?>",
+				description: "get deals for all your favorited games\nmax is optional and limits maximum price (e.g. max=30)",
 				function:    cmdFavDeals,
 			},
 			"help": {

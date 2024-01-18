@@ -45,8 +45,8 @@ func head() {
 	c.Printf("\nFind and track game deals\n\n")
 
 	c = color.New(color.Faint)
-	c.Printf("This tool uses the cheapshark api to find and track game deals but is not affiliate with cheapshark in any way. ")
-	c.Printf("Deal links use cheapshark's redirect url but does not affect your price.\n\n")
+	c.Printf("This tool uses the CheapShark API to find and track game deals but is not affiliated with CheapShark in any way. ")
+	c.Printf("Deal links use cheapshark's redirect url but should not affect your price.\n\n")
 
 	utils.HelperLine("help", "", "get a list of available commands")
 }

@@ -45,6 +45,7 @@ more info.)
 
 ```
 > search fallout 4 max=10
+Searching for: "fallout 4"
 
 ┌─────┬────────────────────────────────────┬───────────────┐
 │ ID  │ TITLE                              │ CHEAPEST DEAL │
@@ -75,7 +76,6 @@ in browser. The rest should be self-explanatory.
 
 ```
 > deals 1 max=10
-
 Deals for: "Fallout 4"
 Historically cheapest price: $4.25 (2021-10-15 17:09:59)
 
@@ -113,7 +113,7 @@ by the `ID` of one of the games returned.
 
 ```
 > search lego batman max=5
-Searching for: "lego batman "
+Searching for: "lego batman"
 
 ┌─────┬───────────────────────────────────────────────────────────────┬───────────────┐
 │ ID  │ TITLE                                                         │ CHEAPEST DEAL │
@@ -230,15 +230,37 @@ Historically cheapest price: $2.39 (2023-11-17 14:59:43)
 Here we're getting deals for "LEGO Batman" and "LEGO Batman 3: Beyond Gotham" and limiting the price to a maximum
 of $5.
 
+### 2.3 Misc
+
+**2.3.1 Help**
+
+`> help`
+
+If you're ever lost, use the `help` command to display a full list of commands and how to use them.
+
+**2.3.2 Stores**
+
+`> stores`
+
+Currently unused, the `stores` command gives you a full list of stores in the CheapShark API. In the future, this will be
+used to display deals for a given store, or hide deals from specific stores you don't want to use.
+
+**2.3.3 Exit**
+
+`> exit`
+
+I mean...
+
 ## 3. Found a bug? Have suggestions?
 
 Feel free to use the Issues tab above (or [click here](https://github.com/criticalsession/game-deal/issues)) if you've found 
 bugs, have problems running **Game-Deal**, have suggestions for improvements or general tips on how I can make the Go code better.
 
-## 5. Known issues
+## 4. To-Do
 
-- None
+- [ ] Store search
+- [ ] Hide deals from stores
 
-## 6. Like Game-Deal?
+## 5. Like Game-Deal?
 
 If you're feeling generous, buy me a beer! - https://www.buymeacoffee.com/criticalsession 🍺❤️

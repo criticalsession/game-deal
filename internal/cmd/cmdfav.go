@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/criticalsession/game-deal/internal/api"
 	"github.com/criticalsession/game-deal/internal/db"
@@ -98,4 +99,25 @@ func cmdListFav(config *api.Config, args ...string) {
 	t.Render()
 
 	fmt.Println()
+}
+
+func cmdFavDeals(config *api.Config, args ...string) {
+	res, err := db.GetFavs()
+	if err != nil {
+		utils.PrintError(err.Error())
+		return
+	}
+
+	if len(res) == 0 {
+		color.Yellow("No favorited games :(\n\n")
+		return
+	}
+
+	ids := []string{}
+
+	for _, r := range res {
+		ids = append(ids, r.GameId)
+	}
+
+	getGameDeals(config, strings.Join(ids, ","))
 }

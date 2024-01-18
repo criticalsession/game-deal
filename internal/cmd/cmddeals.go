@@ -30,7 +30,11 @@ func cmdDeals(config *api.Config, args ...string) {
 		return
 	}
 
-	result, err := config.GetGameDeals(cheapsharkGame.GameID)
+	getGameDeals(config, cheapsharkGame.GameID)
+}
+
+func getGameDeals(config *api.Config, gameId string) {
+	result, err := config.GetGameDeals(gameId)
 	if err != nil {
 		utils.PrintError(fmt.Sprint("An error occured while searching deals:", err.Error()))
 		return

@@ -38,6 +38,13 @@ func cmdSearch(config *api.Config, args ...string) {
 		keywords += s + " "
 	}
 
+	if len(keywords) < 1 {
+		utils.PrintError("\"search\" command requires at least one keyword.")
+		return
+	}
+
+	keywords = strings.TrimRight(keywords, " ")
+
 	c := color.New(color.FgGreen)
 	c.Printf("Searching for: \"%s\"\n", keywords)
 

@@ -51,6 +51,10 @@ func PrintError(s string) {
 	color.Red("%s %s\n\n", emoji.Sprintf(":red_exclamation_mark:"), s)
 }
 
+func PrintInfo(s string) {
+	color.Yellow("! %s\n\n", s)
+}
+
 func GetIndexFromInput(s string) (int, error) {
 	s = strings.ReplaceAll(s, "[", "")
 	s = strings.ReplaceAll(s, "]", "")

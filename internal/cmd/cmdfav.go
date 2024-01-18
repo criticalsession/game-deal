@@ -80,7 +80,7 @@ func cmdListFav(config *api.Config, args ...string) {
 	}
 
 	if len(res) == 0 {
-		color.Yellow("No favorited games :(\n\n")
+		utils.PrintInfo("No favorited games\n\n")
 		return
 	}
 
@@ -109,7 +109,7 @@ func cmdFavDeals(config *api.Config, args ...string) {
 	}
 
 	if len(res) == 0 {
-		color.Yellow("No favorited games :(\n\n")
+		utils.PrintInfo("No favorited games\n\n")
 		return
 	}
 
@@ -119,5 +119,11 @@ func cmdFavDeals(config *api.Config, args ...string) {
 		ids = append(ids, r.GameId)
 	}
 
-	getGameDeals(config, strings.Join(ids, ","))
+	maxPrice, err := getMaxPrice(args...)
+	if err != nil {
+		utils.PrintError(err.Error())
+		return
+	}
+
+	getGameDeals(config, strings.Join(ids, ","), maxPrice)
 }

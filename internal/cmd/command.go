@@ -11,8 +11,8 @@ type command struct {
 func getCommands() (map[string]command, []string) {
 	return map[string]command{
 			"search": {
-				name:        "search [keywords]",
-				description: "find games matching keywords",
+				name:        "search [keywords] <max=?>",
+				description: "find games matching keywords\nmax is optional and limits maximum price (e.g. max=30)",
 				function:    cmdSearch,
 			},
 			"deals": {

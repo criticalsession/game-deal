@@ -70,3 +70,18 @@ func GetIndexFromInput(s string) (int, error) {
 
 	return id - 1, nil
 }
+
+func HelperLine(command, args, toDo string) {
+	c := color.New(color.Reset)
+	c.Printf("Use \"")
+	c = c.Add(color.Bold)
+	c.Printf("%s", command)
+
+	if args != "" {
+		c = c.Add(color.FgHiCyan)
+		c.Printf(" %s", args)
+	}
+
+	c = color.New(color.Reset)
+	c.Printf("\" command to %s\n", toDo)
+}

@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/criticalsession/game-deal/internal/api"
+	"github.com/criticalsession/game-deal/utils"
 	"github.com/fatih/color"
 	"github.com/kyokomi/emoji/v2"
 )
@@ -47,8 +48,7 @@ func head() {
 	c.Printf("This tool uses the cheapshark api to find and track game deals but is not affiliate with cheapshark in any way. ")
 	c.Printf("Deal links use cheapshark's redirect url but does not affect your price.\n\n")
 
-	c = color.New(color.Reset)
-	c.Printf("Try 'help' for list of available commands.\n")
+	utils.HelperLine("help", "", "get a list of available commands")
 }
 
 func cleanInput(s string) []string {

@@ -89,15 +89,8 @@ func cmdSearch(config *api.Config, args ...string) {
 	t.SetStyle(table.StyleLight)
 	t.Render()
 
-	c = color.New(color.Reset)
-	c.Println()
-	c.Printf("Use \"")
-	c = c.Add(color.Bold)
-	c.Print("deals ")
-	c = c.Add(color.FgHiCyan)
-	c.Printf("[ID]")
-	c = color.New(color.Reset)
-	c.Printf("\" command to see deals for a game\n")
+	fmt.Println()
+	utils.HelperLine("deals", "[ID] <max=?>", "see deals for a game")
 
 	config.SetGameList(games)
 }

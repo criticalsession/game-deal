@@ -122,14 +122,7 @@ func getGameDeals(config *api.Config, gameId string, maxPrice float64) {
 	}
 
 	if len(dealList) > 0 {
-		c := color.New(color.Reset)
-		c.Printf("Use \"")
-		c = c.Add(color.Bold)
-		c.Print("open ")
-		c = c.Add(color.FgHiCyan)
-		c.Printf("[ID]")
-		c = color.New(color.Reset)
-		c.Printf("\" command to open deal in browser\n")
+		utils.HelperLine("open", "[ID]", "open deal in browser")
 	}
 
 	config.SetDealsList(dealList)

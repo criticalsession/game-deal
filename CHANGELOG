@@ -1,5 +1,10 @@
 # [Unreleased]
 
+## Changed
+
+- Replaced use of sqlite to json file for storing favorite games. Sqlite was a bit overkill.
+- On load attepts to migrate sqlite db if found.
+
 # [1.0] - 2024-10-18
 
 - Initial release.

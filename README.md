@@ -259,7 +259,7 @@ bugs, have problems running **Game-Deal**, have suggestions for improvements or 
 ## 4. To-Do
 
 - [ ] Store search
-- [ ] Hide deals from stores
+- [ ] Hide deals from stores <-- working on this
 
 ## 5. Like Game-Deal?
 
